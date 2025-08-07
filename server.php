@@ -1,11 +1,17 @@
 <?php
 
-if (php_sapi_name() === 'cli-server') {
-    $url  = parse_url($_SERVER['REQUEST_URI']);
-    $file = __DIR__ . $url['path'];
-    if (is_file($file)) {
-        return false;
-    }
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @see https://laravel.com/docs
+ */
+
+$uri = urldecode(
+    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
+);
+
+if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
+    return false;
 }
 
 require_once __DIR__.'/public/index.php';
